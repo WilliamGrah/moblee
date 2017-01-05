@@ -43,6 +43,21 @@ def getdata():
 
 	prepare_data(data)
 
+
+def parse_data(data):
+	response = {"last_update":data[0][7], "content":[]}
+	for i in data:
+		json = {}
+		json["question_id"] = i[0]
+		json["title"] = i[1]
+		json["owner_name"] = i[2]
+		json["score"] = i[3]
+		json["creation_date"] = i[4]
+		json["link"] = i[5]
+		json["is_answered"] = i[6]
+		response["content"].append(json)
+	return response
+
 @route('/showdata',method="GET")
 def showdata():
 	conn = sqlite3.connect('stackdata.db')
@@ -50,8 +65,8 @@ def showdata():
 	c.execute("SELECT * FROM stackdata")
 	data = c.fetchall()
 	c.close()
-	print(data)
-	return str(data)
+	json = parse_data(data)
+	return json
 
 @route('/question', method="GET")
 def page():
