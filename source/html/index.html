@@ -1,0 +1,96 @@
+<html>
+<head>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<style>
+	.bg-gray {
+		margin-top: 20px;
+		background-color: #CCC;
+		width: 800px;
+		overflow: auto;
+	}
+	.center {
+		padding: 1px 20px 10px 20px;
+	}
+	.search-button {
+		padding: 15px;
+		float: right;
+	}
+</style>
+
+<script>
+  $('#myButton').on('click', function () {
+    var $btn = $(this).button('loading')
+    $btn.button('reset')
+  })
+</script>
+
+</head>
+
+<body>
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<h3><i>PHP - StackOverflow</i></h3>
+
+		<button type="button" id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
+  			Persistir dados
+		</button>
+
+		<div class="bg-gray">
+			<div class="center">
+				<h3><i>Buscar na API</i></h3>
+
+				<div class="row">
+  					<div class="col-xs-6 col-sm-3">Page</div>
+  					<div class="col-xs-6 col-sm-3">RPP</div>
+
+  					<!-- Add the extra clearfix for only the required viewport -->
+  					<div class="clearfix visible-xs-block"></div>
+
+  					<div class="col-xs-6 col-sm-3">Sort</div>
+  					<div class="col-xs-6 col-sm-3">Score</div>
+  				</div>
+  				<div class="row">
+  					<form action="http://localhost:8000/question" method="post">
+  						<div class="col-xs-6 col-sm-3">
+	  						<input name="page" type="text" class="form-control" id="page">
+  						</div>
+  						<div class="col-xs-6 col-sm-3">
+	  						<input name="rpp" class="form-control" id="rpp">
+  						</div>
+
+  						<div class="col-xs-6 col-sm-3">
+	  						<input name="sort" type="text" class="form-control" id="sort">
+  						</div>
+  						<div class="col-xs-6 col-sm-3">
+	  						<input name="score" type="text" class="form-control" id="score">
+  						</div>
+  						<input value="OK" type="submit">
+  						<div class="search-button">
+							<button type="button" id="myButton" data-loading-text="Loading..." 	class="btn btn-success" autocomplete="off">
+							Buscar
+							</button>
+  						</div>
+  					</form>
+  				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+
+</body>
+</html>
