@@ -89,11 +89,10 @@ def search():
 	query = ""
 
 	if request.GET['score']:
-		query = query + " WHERE score > "+request.GET['score']+" AND "
+		query = query + " WHERE score > "+request.GET['score']
 
 	if request.GET['sort']:
-		query = query + " ORDER BY "+request.GET['sort']+ " AND "
-	
+		query = query + " ORDER BY "+request.GET['sort']+" DESC"
 
 	if request.GET['page'] and request.GET['rpp']:
 		page = int(request.GET['page'])-1
