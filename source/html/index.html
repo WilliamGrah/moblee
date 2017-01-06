@@ -84,7 +84,7 @@
   				</div>
 			</div>
 		</div>
-		<div class="results">
+		<div id="results" class="results">
 			<table id="table_results" class="table table-hover">
 				<thead>
 					<tr>
@@ -112,6 +112,7 @@
 			context: document.body
 		}).done(function(){
 			$btn.button('reset')
+			alert("Dados salvos!")
 		}).fail(function(){
 			alert("Alguma coisa deu errado!")
 			$btn.button('reset')
@@ -128,10 +129,14 @@
 			data: $("form").serialize(),
 			context: document.body
 		}).done(function(data){
-			console.log(data)
 			$btn.button('reset')
 			fill_the_table(data["content"])
-			$(".results")[0].style.display = "block"
+			//$(".results")[0].style.display = "block"
+			var popup = window.open("","", "width=800,height=480,resizeable,scrollbars");
+			var table = document.getElementById("results");
+
+			popup.document.write(table.outerHTML);
+			popup.document.close()
 
 		}).fail(function(){
 			alert("Alguma coisa deu errado!")
@@ -146,8 +151,11 @@
 		var tbody = document.createElement("tbody")
 		for (var i in data) {
 			tableref.appendChild(tbody)
-			string = "<td>"+data[i]["title"]+"</td><td>"+data[i]["score"]+"</td><td>"+data[i]["is_answered"]+"</td><td><a href='"+data[i]["link"]+"'>Link</a></td>"
 			
+			var answer = (data[i]["is_answered"]) ? true : false
+
+			string = "<td>"+data[i]["title"]+"</td><td>"+data[i]["score"]+"</td><td>"+answer+"</td><td><a target='_target' href='"+data[i]["link"]+"'>Link</a></td>"
+
 			var row = tbody.insertRow(tbody.rows.length)
 			row.innerHTML = string
 		}
