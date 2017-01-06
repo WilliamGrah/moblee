@@ -129,7 +129,6 @@
 			data: $("form").serialize(),
 			context: document.body
 		}).done(function(data){
-			$btn.button('reset')
 			fill_the_table(data["content"])
 			//$(".results")[0].style.display = "block"
 			var popup = window.open("","", "width=800,height=480,resizeable,scrollbars");
@@ -137,6 +136,8 @@
 
 			popup.document.write(table.outerHTML);
 			popup.document.close()
+
+			$btn.button('reset')
 
 		}).fail(function(){
 			alert("Alguma coisa deu errado!")
