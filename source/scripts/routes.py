@@ -67,7 +67,7 @@ def parse_data(data):
 		response["content"].append(json)
 	return response
 
-@route('/question', method="GET")
+@route('/', method="GET")
 def page():
 	return static_file("index.html", root="source/html")
 
