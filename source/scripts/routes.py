@@ -67,11 +67,15 @@ def parse_data(data):
 		response["content"].append(json)
 	return response
 
-@route('/showdata',method="GET")
-def showdata():
+@route('/question', method="GET")
+def page():
+	return static_file("index.html", root="source/html")
+
+
+def showdata(filter):
 	conn = sqlite3.connect('stackdata.db')
 	c = conn.cursor()
-	c.execute("SELECT * FROM stackdata")
+	c.execute("SELECT * FROM stackdata {filter}".format(filter=filter))
 	data = c.fetchall()
 	c.close()
 	if not data:
@@ -80,16 +84,22 @@ def showdata():
 		json = parse_data(data)
 	return json
 
-@route('/question', method="GET")
-def page():
-	return static_file("index.html", root="source/html")
-
-@route('/question', method="POST")
+@route('/stack_moblee/v1/question', method="GET")
 def search():
-	page = request.forms.get('page')
-	rpp = request.forms.get('rpp')
-	sort = request.forms.get('sort')
-	score = request.forms.get('score')
-	return
+	query = ""
+
+	if request.GET['score']:
+		query = query + " WHERE score > "+request.GET['score']+" AND "
+
+	if request.GET['sort']:
+		query = query + " ORDER BY "+request.GET['sort']+ " AND "
+	
+
+	if request.GET['page'] and request.GET['rpp']:
+		page = int(request.GET['page'])-1
+		offset = int(page) * int(request.GET['rpp'])
+		query = query + " LIMIT "+str(request.GET['rpp'])+" OFFSET "+str(offset)
+	
+	return showdata(query)
 
 run(host='localhost', port=8080, debug=True, reloader=True)
