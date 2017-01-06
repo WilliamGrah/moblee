@@ -31,8 +31,17 @@ def prepare_data(data):
 
 		insert_into(values)
 
+def clean_db():
+	conn = sqlite3.connect('stackdata.db')
+	c = conn.cursor()
+	c.execute('DELETE FROM stackdata')
+	conn.commit()
+	c.close()
+
+
 @route('/getdata',method="GET")
 def getdata():
+	clean_db()
 	url = "https://api.stackexchange.com/2.2/questions?page=1&pagesize=100&order=desc&sort=creation&tagged=php&site=stackoverflow"
 	request = urllib2.Request(url)
 	response = urllib2.urlopen(request)
@@ -65,7 +74,10 @@ def showdata():
 	c.execute("SELECT * FROM stackdata")
 	data = c.fetchall()
 	c.close()
-	json = parse_data(data)
+	if not data:
+		json = {}
+	else:
+		json = parse_data(data)
 	return json
 
 @route('/question', method="GET")
