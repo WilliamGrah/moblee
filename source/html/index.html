@@ -84,7 +84,7 @@
   				</div>
 			</div>
 		</div>
-		<div class="results">
+		<div id="results" class="results">
 			<table id="table_results" class="table table-hover">
 				<thead>
 					<tr>
@@ -131,7 +131,12 @@
 		}).done(function(data){
 			$btn.button('reset')
 			fill_the_table(data["content"])
-			$(".results")[0].style.display = "block"
+			//$(".results")[0].style.display = "block"
+			var popup = window.open("","", "width=800,height=480,resizeable,scrollbars");
+			var table = document.getElementById("results");
+
+			popup.document.write(table.outerHTML);
+			popup.document.close()
 
 		}).fail(function(){
 			alert("Alguma coisa deu errado!")
