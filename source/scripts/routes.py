@@ -42,7 +42,7 @@ def clean_db():
 @route('/getdata',method="GET")
 def getdata():
 	clean_db()
-	url = "https://api.stackexchange.com/2.2/questions?page=1&pagesize=100&order=desc&sort=creation&tagged=php&site=stackoverflow"
+	url = "https://api.stackexchange.com/2.2/questions?page=1&pagesize=99&order=desc&sort=creation&tagged=php&site=stackoverflow"
 	request = urllib2.Request(url)
 	response = urllib2.urlopen(request)
 	if response.info().get('Content-Encoding') == 'gzip':

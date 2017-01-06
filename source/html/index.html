@@ -128,7 +128,6 @@
 			data: $("form").serialize(),
 			context: document.body
 		}).done(function(data){
-			console.log(data)
 			$btn.button('reset')
 			fill_the_table(data["content"])
 			$(".results")[0].style.display = "block"
