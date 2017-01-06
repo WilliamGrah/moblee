@@ -149,7 +149,7 @@
 			
 			var answer = (data[i]["is_answered"]) ? true : false
 
-			string = "<td>"+data[i]["title"]+"</td><td>"+data[i]["score"]+"</td><td>"+answer+"</td><td><a href='"+data[i]["link"]+"'>Link</a></td>"
+			string = "<td>"+data[i]["title"]+"</td><td>"+data[i]["score"]+"</td><td>"+answer+"</td><td><a target='_target' href='"+data[i]["link"]+"'>Link</a></td>"
 
 			var row = tbody.insertRow(tbody.rows.length)
 			row.innerHTML = string
