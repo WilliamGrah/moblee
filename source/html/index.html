@@ -2,7 +2,7 @@
 <head>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -14,11 +14,17 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <style>
+	.results {
+		width: 800px;
+		display: none;
+	}
+
 	.bg-gray {
 		margin-top: 20px;
-		background-color: #CCC;
+		background-color: #e6e6e6;
 		width: 800px;
 		overflow: auto;
+		border: 1px dotted #ccc;
 	}
 	.center {
 		padding: 1px 20px 10px 20px;
@@ -29,13 +35,6 @@
 	}
 </style>
 
-<script>
-  $('#myButton').on('click', function () {
-    var $btn = $(this).button('loading')
-    $btn.button('reset')
-  })
-</script>
-
 </head>
 
 <body>
@@ -43,7 +42,7 @@
 	<div class="col-md-6 col-md-offset-3">
 		<h3><i>PHP - StackOverflow</i></h3>
 
-		<button type="button" id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
+		<button type="button" id="persist_data_button" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">
   			Persistir dados
 		</button>
 
@@ -62,7 +61,7 @@
   					<div class="col-xs-6 col-sm-3">Score</div>
   				</div>
   				<div class="row">
-  					<form action="http://localhost:8000/question" method="post">
+  					<form>
   						<div class="col-xs-6 col-sm-3">
 	  						<input name="page" type="text" class="form-control" id="page">
   						</div>
@@ -76,9 +75,8 @@
   						<div class="col-xs-6 col-sm-3">
 	  						<input name="score" type="text" class="form-control" id="score">
   						</div>
-  						<input value="OK" type="submit">
   						<div class="search-button">
-							<button type="button" id="myButton" data-loading-text="Loading..." 	class="btn btn-success" autocomplete="off">
+							<button type="button" id="search_button" data-loading-text="Loading..." 	class="btn btn-success" autocomplete="off">
 							Buscar
 							</button>
   						</div>
@@ -86,11 +84,75 @@
   				</div>
 			</div>
 		</div>
+		<div class="results">
+			<table id="table_results" class="table table-hover">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Score</th>
+						<th>Answered?</th>
+						<th>Link</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 	</div>
-
-
-
 </div>
 
+<script>
+
+	$('#persist_data_button').on('click', function () {
+		var $btn = $(this).button('loading')
+
+		$.ajax({
+			type: "GET",
+			url: "/getdata",
+			context: document.body
+		}).done(function(){
+			$btn.button('reset')
+		}).fail(function(){
+			alert("Alguma coisa deu errado!")
+			$btn.button('reset')
+		});
+	})
+
+	$('#search_button').on('click', function () {
+		var $btn = $(this).button('loading')
+		var str = $("form").serialize();
+
+		$.ajax({
+			type: "GET",
+			url: "/stack_moblee/v1/question",
+			data: $("form").serialize(),
+			context: document.body
+		}).done(function(data){
+			console.log(data)
+			$btn.button('reset')
+			fill_the_table(data["content"])
+			$(".results")[0].style.display = "block"
+
+		}).fail(function(){
+			alert("Alguma coisa deu errado!")
+			$btn.button('reset')
+		});
+	})
+
+	function fill_the_table(data) {
+	var string = ""
+		$("tbody").remove()
+		var tableref = document.getElementById("table_results")
+		var tbody = document.createElement("tbody")
+		for (var i in data) {
+			tableref.appendChild(tbody)
+			string = "<td>"+data[i]["title"]+"</td><td>"+data[i]["score"]+"</td><td>"+data[i]["is_answered"]+"</td><td><a href='"+data[i]["link"]+"'>Link</a></td>"
+			
+			var row = tbody.insertRow(tbody.rows.length)
+			row.innerHTML = string
+		}
+
+	}
+</script>
 </body>
 </html>
