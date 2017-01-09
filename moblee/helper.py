@@ -1,3 +1,7 @@
+import json
+import time
+import data
+
 
 def get_params(request):
     query = ""
@@ -30,3 +34,20 @@ def parse_data(data):
         json["is_answered"] = i[6]
         response["content"].append(json)
     return response
+
+
+def prepare_data(result):
+    jj = json.loads(result)
+    last_update = int(time.time())
+
+    for i in jj["items"]:
+        values = dict()
+        values["question_id"] = i["question_id"]
+        values["title"] = i["title"]
+        values["owner_name"] = i["owner"]["display_name"]
+        values["score"] = i["score"]
+        values["creation_date"] = i["creation_date"]
+        values["link"] = i["link"]
+        values["is_answered"] = i["is_answered"]
+        values["last_update"] = last_update
+        data.create(values)
