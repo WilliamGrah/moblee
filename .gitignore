@@ -1,2 +1,4 @@
 venv/
 stackdata.db
+*.pyc
+__pycache__
