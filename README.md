@@ -3,7 +3,7 @@
 ## Getting Started
 1. First you will need to install the requirements:
 
-    $ pip install -r requirements
+    $ pip install -r requirements.txt
 
 2. Run the following command:
   
